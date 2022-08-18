@@ -1,0 +1,222 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.header {
+    height: 18vh;
+    width: 100vw;
+}
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-image: linear-gradient(to top, #fbc2eb 0%, #a6c1ee 100%);;
+    height: 100vh;
+    width: 100%;
+}
+
+.time-box, .navBoxes {
+    text-align: center;
+    color: aliceblue;
+}
+#time {
+    font-size: 80px;
+    height: 100px;
+}
+#date{
+    margin-top: -12px;
+    height: 20px;
+}
+.search-height{
+    height: 50px;
+}
+.search-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    max-width: 630px;
+    min-width: 270px;
+    background-color: white;
+    border-radius: 25px;
+    margin: 20px auto;
+}
+
+.searchEngine-icon:hover, .search-right:hover{
+    background-color: aliceblue;
+}
+.searchEngine-icon {
+    display: flex;
+    align-items: center;
+    padding-left: 15px;
+    border-radius: 25px 0px 0px 25px;
+    cursor: pointer;
+}
+
+.down{
+    width: 0px;
+    height: 0px;
+    border-style: solid;
+    border-width:7px 4px 0px;
+    border-color: rgb(204, 204, 204) transparent transparent;
+    transform: scale(1.2);
+    margin: 0 15px 0 6px;
+}
+.searchEngMenu {
+    display: none;
+    position: absolute;
+    padding: 5px;
+    margin-top: 3px;
+    background-color: white;
+    border-radius: 8px;
+    z-index: 11;
+}
+.searchEngMenuItem{
+    display: flex;
+    align-items: center;
+    text-align: center;
+    padding: 5px;
+}
+.searchEngMenuItem:hover {
+    background-color: aliceblue;
+}
+.searchEngMenuItem img{
+    width: 20px;
+    height: 20px; 
+    margin-right: 5px;  
+}
+.searchEngMenuItem span{
+    font-size: 14px;
+}
+
+.search-form{
+    flex:1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.searchbar-input{
+    width: 100%;
+    line-height: 22px;
+    border: 0px;
+    outline: none;
+    margin: auto 0px;
+}
+.search-right{
+    display: flex;
+    align-items: center;
+    border-radius: 0px 25px 25px 0px;   
+}
+.search-button{
+    margin: 0px 15px;
+    padding: 0px;
+    border: 0px;
+    outline: none;
+    background-color: white;
+    cursor: pointer;
+}
+
+.navBoxes{
+    display: flex;
+    flex-wrap: wrap;
+    width: 50%;
+    max-width: 630px;
+    min-width: 270px;
+    
+}
+.navBox, .addBox{
+    padding: 5px 15px;
+    cursor: pointer;
+}
+
+.navIcon, #rightMenu{
+    border-radius: 16px;
+    background-size: 60px;
+    background-color: white;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.icon{
+    width: 32px;
+    height: 32px;
+}
+.navTitle {
+    font-size: 12px;
+    margin-top: 6px;
+}
+
+#addSite{
+    display: none;
+    width: 200px;
+    height: 200px;
+    padding: 12px 16px;
+    background-color: white;
+    border-radius: 8px;
+    position: fixed;
+    margin: auto;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 11;
+}
+.subPageBody{
+    display: flex;
+    flex-direction: column;
+}
+.input-container{
+    display: flex;
+    flex-direction: column;
+    margin-top: 6px;
+}
+.fill{
+    border: 1px solid gray;
+    border-radius: 4px;
+    line-height: 22px;
+    height: 32px;
+    padding: 0 5px;
+}
+.subPageButton{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+.subPageButton button{
+    width: 45%;
+    height: 32px;
+}
+
+#popLayer{
+    display: none;
+    background-color: #B3B3B3;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 10;     
+    opacity: .50;
+}
+
+
+#rightMenu {
+    display: none;
+    position: absolute;
+    list-style: none;
+    text-align: center;
+    cursor: pointer;
+}
+
+
+#del {
+    width: 100%;
+    font-size: 14px;
+    list-style: none;
+    
+}

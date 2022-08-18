@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./style.css" />
+    <title>小恐龙起始页</title>
+</head>
+
+<body>
+    <div class="main">
+        <div class="header">
+            <div id="he-plugin-simple"></div>
+
+        </div>
+        <div class="time-box">
+            <div id="time"></div>
+            <div id="date"></div>
+        </div>
+
+        <div class="search-wrapper">
+            <!-- 选择搜索引擎按钮 -->
+            <div class="search-left search-height">
+                <div class="searchEngine-icon search-height" id="searchEngine">
+                    <img id="searchEngineIcon" alt="searchEngine-icon" src="./resources/baidu.svg" width="24px"
+                        height="24px">
+                    <i class="down"></i>
+                </div>
+
+                <div class="searchEngMenu" id="searchEngMenu">
+                    <div class="searchEngMenuItem" src="https://www.baidu.com/s?">
+                        <img alt="searchEngine-icon" src="./resources/baidu.svg">
+                        <span>百度</span>
+                    </div>
+                    <div class="searchEngMenuItem" src="https://cn.bing.com/search?">
+                        <img alt="searchEngine-icon" src="./resources/bing.svg">
+                        <span>必应</span>
+                    </div>
+                    <div class="searchEngMenuItem" src="https://www.sogou.com/web?">
+                        <img alt="searchEngine-icon" src="./resources/sougou.svg">
+                        <span>搜狗</span>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- 搜索表单 -->
+            <form class="search-form" action="https://www.baidu.com/s?">
+                <input type="text" class="searchbar-input" maxlength="2048" name="wd" title="Search" autofocus
+                    autocomplete="off" placeholder="搜索" required>
+                <div class="search-right search-height">
+                    <button class="search-button"><img alt="search-icon" src="./resources/search.png" width="24px"
+                            height="24px"></button>
+                </div>
+            </form>
+        </div>
+
+
+        <div class="navBoxes">
+            <!-- 基础单标签
+            <div class="navBox" onclick="openSite()">
+                <a href="http://bilibili.com/"></a>
+                <div class="navIcon">
+                    <img class="icon" alt="icon" src="https://www.bilibili.com/favicon.ico">
+                </div>
+                <div class="navTitle">
+                    <span>哔哩哔哩</span>
+                </div>
+            </div>
+            -->
+
+
+            <!-- 添加图标页面 -->
+            <div class="addBox" onclick="popBox()" id="addNav">
+                <div class="navIcon">
+                    <img class="icon" alt="icon" src="./resources/add.svg">
+                </div>
+                <div class="navTitle">
+                    <span></span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 添加网站的部件 -->
+    <div id="popLayer"></div>
+    <div id="addSite">
+        <div class="subPageTitle">
+            <b>添加网站</b>
+        </div>
+        <div class="subPageBody">
+            <div class="input-container">
+                <label for="siteName">名称</label>
+                <input type="text" autocomplete="off" class="fill" id="siteName">
+                </input>
+            </div>
+            <div class="input-container">
+                <label for="addUrl">URL</label>
+                <input type="text" autocomplete="off" class="fill" id="addUrl" required>
+                </input>
+            </div>
+        </div>
+        <div class="subPageButton">
+            <button onclick="addSite()">
+                添加
+            </button>
+            <button onclick="closeBox()">
+                取消
+            </button>
+        </div>
+    </div>
+
+    <!-- 删除导航图标部件 -->
+    <ul id="rightMenu">
+        <li id="del">删除</li>
+    </ul>
+
+    <!-- 选择搜索引擎部件 -->
+
+
+    <script>
+        //全局变量
+        let delNav;
+
+        /*初始化网站*/
+        function init() {
+            let navConfig = [];
+            if (!window.localStorage) {
+                alert("浏览器不支持localstorage");
+                return false;
+            } else {
+                if (localStorage.getItem('navConfig') === null) {
+                    navConfig = [
+                        {
+                            name: '哔哩哔哩',
+                            url: 'https://bilibili.com/',
+                        },
+                        {
+                            name: '百度',
+                            url: 'https://baidu.com/',
+                        }, {
+                            name: '知乎',
+                            url: 'https://zhihu.com/',
+                        }, {
+                            name: 'Github',
+                            url: 'https://github.com/',
+                        }, {
+                            name: '掘金',
+                            url: 'https://juejin.cn/',
+                        },
+                    ]
+                    localStorage.setItem('navConfig', JSON.stringify(navConfig));
+                }
+                else {
+                    navConfig = JSON.parse(localStorage.getItem('navConfig'));
+                }
+                navConfig.map(nav => { createNav(nav["name"], nav["url"]); })
+
+
+                if (localStorage.getItem('searchEngineConfig') !== null) {
+                    let searchEngineConfig = JSON.parse(localStorage.getItem('searchEngineConfig'));
+                    document.getElementById("searchEngineIcon").src = searchEngineConfig[0];
+                    document.querySelector(".search-form").action = searchEngineConfig[1];
+                    document.querySelector(".searchbar-input").name = searchEngineConfig[2];
+                }
+            }
+
+        }
+
+        /* 返回[时间， 日期] */
+        function dateTime() {
+            let date = new Date();
+            let month = date.getMonth() + 1;
+            month = month < 10 ? '0' + month : month;
+            let day = date.getDate();
+            day = day < 10 ? '0' + day : day;
+
+
+            let hours = date.getHours();
+            hours = hours < 10 ? '0' + hours : hours;
+            let minutes = date.getMinutes();
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+
+            let weekNum = date.getDay();
+            let weeks = new Array(" 星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"); week = weeks[weekNum]; let
+                dateStr = month + "月" + day + "日" + " " + week; let timeStr = hours + ":" + minutes; return [timeStr,
+                    dateStr];
+        };
+
+        window.onload = function () {
+            init();
+            document.querySelector('#date').textContent = dateTime()[1];
+            setInterval("document.querySelector('#time').textContent=dateTime()[0]", 1000);
+        };
+
+
+        function popBox() {
+            let popBox = document.getElementById("addSite");
+            let popLayer = document.getElementById("popLayer");
+            popBox.style.display = "block";
+            popLayer.style.display = "block";
+        };
+
+        function closeBox() {
+            let popBox = document.getElementById("addSite");
+            let popLayer = document.getElementById("popLayer");
+            popBox.style.display = "none";
+            popLayer.style.display = "none";
+        }
+
+        /* 手动添加网站 */
+        function addSite() {
+            let urlInput = document.getElementById('addUrl').value;
+            let siteName = document.getElementById('siteName').value;
+
+            if (!(urlInput.includes("http://") || urlInput.includes("https://"))) {
+                urlInput = "https://" + urlInput;
+            }
+            if (!urlInput.endsWith('/')) {
+                urlInput += '/';
+            }
+            if (urlInput == "") return;
+
+            let navObj = { name: siteName, url: urlInput };
+            let navConfig = JSON.parse(localStorage.getItem('navConfig'));
+            console.log(navConfig);
+            navConfig.push(navObj);
+            localStorage.setItem("navConfig", JSON.stringify(navConfig));
+            /* 设置新标签 */
+            createNav(siteName, urlInput);
+
+            //关闭窗口
+            closeBox();
+        }
+
+        /* 添加单个导航标签 */
+        function createNav(siteName, siteUrl) {
+            let navBoxDom = document.querySelector(".navBoxes");
+
+            let newNavBox = document.createElement('div');
+            newNavBox.setAttribute("class", "navBox");
+            newNavBox.setAttribute("title", siteName);
+
+            let newA = document.createElement("a");
+            newA.href = siteUrl;
+            newNavBox.appendChild(newA);
+
+            let newNavIcon = document.createElement('div');
+            newNavIcon.setAttribute("class", "navIcon");
+            newNavBox.appendChild(newNavIcon);
+
+            let newImg = document.createElement("img");
+            newImg.setAttribute("class", "icon");
+            newImg.alt = "icon";
+            newImg.src = siteUrl + "favicon.ico";
+            newNavIcon.appendChild(newImg);
+
+            let newNavTitle = document.createElement('div');
+            newNavTitle.setAttribute("class", "navTitle");
+            newNavTitle.innerHTML = "<span>" + siteName + "</span>";
+            newNavBox.appendChild(newNavTitle)
+
+            // 添加点击打开网页事件
+            newNavBox.addEventListener("click", () => {
+                let cTarget = event.currentTarget;
+                let url = cTarget.querySelector('a').href;
+                if (url) {
+                    window.open(url, "_self");
+                }
+            })
+
+            newNavIcon.oncontextmenu = function (e) {
+                e = e || window.event;
+
+                let rTarget = e.currentTarget;
+                delNav = rTarget;
+                console.log(rTarget)
+                let rightMenu = document.getElementById('rightMenu')
+
+                //菜单高度
+
+                let rmHeight = parseInt(rightMenu.clientHeight);
+                //网页的宽度(高度用同样的方法解决)
+                //元素位置
+                let navRect = rTarget.getBoundingClientRect()
+                console.log(rmHeight);
+                console.log(navRect)
+
+                rightMenu.style.left = navRect["x"] + "px";
+                rightMenu.style.top = navRect["y"] + "px";
+
+                //显示右键菜单
+                rightMenu.style.display = "flex";
+
+                //阻止默认的右键菜单显示
+                return false;
+            };
+
+            navBoxDom.insertBefore(newNavBox, document.getElementById("addNav"));
+        }
+
+        //不需要时隐藏右键菜单
+        window.onclick = function (e) {
+            document.getElementById("rightMenu").style.display = "none";
+
+            //隐藏搜索引擎选择
+            if (!e.target.closest("#searchEngine") && document.getElementById("searchEngMenu").style.display === "block") {
+                document.getElementById("searchEngMenu").style.display = "none";
+                document.getElementById("popLayer").style.display = "none";
+            }
+
+        }
+
+        //删除图标
+        document.getElementById("rightMenu").onclick = function () {
+            let siteName = delNav.parentNode.getAttribute("title");
+            let navConfig = JSON.parse(localStorage.getItem("navConfig"));
+            newNavConfig = navConfig.filter(item => {
+                return item.name !== siteName;
+            })
+            localStorage.setItem("navConfig", JSON.stringify(newNavConfig));
+
+            if (delNav) {
+                delNav.parentNode.parentNode.removeChild(delNav.parentNode);
+
+            }
+        }
+
+        document.getElementById("searchEngine").onclick = function () {
+            document.getElementById("searchEngMenu").style.display = "block";
+            document.getElementById("popLayer").style.display = "block";
+        }
+
+        //选择并切换搜索引擎
+        document.querySelectorAll(".searchEngMenuItem").forEach(
+            function (currentValue) {
+                currentValue.onclick = function (e) {
+                    e = e || window.event;
+                    let tar = e.currentTarget;
+
+                    let searchUrl = tar.getAttribute("src");
+                    let searchIcon = tar.children[0].getAttribute("src");
+                    let name = tar.children[1].innerHTML;
+                    console.log(name);
+                    document.getElementById("searchEngineIcon").src = searchIcon;
+                    document.querySelector(".search-form").action = searchUrl;
+
+                    let word = "wq";
+                    switch (name) {
+                        case "百度":
+                            word = "wq";
+                            break;
+                        case "必应":
+                            word = "q";
+                            break;
+                        case "搜狗":
+                            word = "query";
+                            break;
+                    }
+
+                    document.querySelector(".searchbar-input").name = word;
+
+                    let searchEngineConfig = [searchIcon, searchUrl, word];
+                    localStorage.setItem("searchEngineConfig", JSON.stringify(searchEngineConfig))
+                }
+            }
+        )
+
+
+    </script>
+
+    <!-- 和风天气插件代码  -->
+    <script>
+        WIDGET = {
+            "CONFIG": {
+                "modules": "01234",
+                "background": "5",
+                "tmpColor": "FFFFFF",
+                "tmpSize": "16",
+                "cityColor": "FFFFFF",
+                "citySize": "16",
+                "aqiColor": "FFFFFF",
+                "aqiSize": "16",
+                "weatherIconSize": "24",
+                "alertIconSize": "18",
+                "padding": "10px 10px 10px 10px",
+                "shadow": "0",
+                "language": "auto",
+                "borderRadius": "5",
+                "fixed": "true",
+                "vertical": "top",
+                "horizontal": "left",
+                "left": "10",
+                "top": "10",
+                "key": "08ad9dc04ef54432951029332f7ad9d3"
+            }
+        }
+    </script>
+    <script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script>
+</body>
+
+</html>

@@ -231,6 +231,8 @@
             localStorage.setItem("navConfig", JSON.stringify(navConfig));
             /* 设置新标签 */
             createNav(siteName, urlInput);
+            urlInput = "";
+            siteName = "";
 
             //关闭窗口
             closeBox();
